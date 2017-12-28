@@ -30,6 +30,11 @@ services:
     stdin_open: true
     tty: true
 
+  mongo:
+    image: 3-jessie
+    volumes:
+      - "$PWD/data/mongo:/data/db"
+
   poxa:
     build:
       context: ./
