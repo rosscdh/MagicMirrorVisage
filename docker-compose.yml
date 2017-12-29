@@ -31,7 +31,7 @@ services:
     tty: true
 
   mongo:
-    image: 3-jessie
+    image: mongo:3-jessie
     volumes:
       - "$PWD/data/mongo:/data/db"
 
