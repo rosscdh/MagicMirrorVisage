@@ -1,6 +1,15 @@
-FROM python:3-alpine
+FROM python:3.4-slim
 
-RUN apk --update add build-base jpeg-dev zlib-dev
+RUN apt-get -y update && \
+    apt-get install -y --fix-missing \
+    build-essential \
+    cmake \
+    httpie \
+    pkg-config \
+    python3-dev \
+    python3-numpy \
+    software-properties-common \
+    && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 ADD . /usr/local/app
 

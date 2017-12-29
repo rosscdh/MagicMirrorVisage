@@ -30,6 +30,20 @@ services:
     stdin_open: true
     tty: true
 
+  gotyou:
+    build:
+      context: ./face_recognition
+      dockerfile: Dockerfile
+    command: /usr/local/bin/python3 /root/picam2facerec.py
+    volumes:
+      - "$PWD/face_recognition/examples/picam2facerec.py:/root/picam2facerec.py"
+      - "$PWD/face_recognition/examples/requirements.txt:/root/requirements.txt"
+    environment:
+      - VISAGE_URL=http://192.168.0.132:8083
+      - FACIAL_URL=http://192.168.0.132:8082
+    stdin_open: true
+    tty: true
+
   mongo:
     image: mongo:3-jessie
     volumes:

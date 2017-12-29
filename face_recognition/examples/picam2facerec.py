@@ -6,7 +6,7 @@ from picamera import PiCamera
 
 #-----SETTINGS------
 # Url to the FaceRec-Server
-face_rec_url = 'http://127.0.0.1:8080/'
+face_rec_url = os.getenv('FACIAL_URL', 'http://127.0.0.1:8080/')
 image_resolution = (640, 480)
 black_n_white = True
 #-------------------

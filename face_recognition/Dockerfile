@@ -33,25 +33,14 @@ RUN cd ~ && \
     cd  dlib/ && \
     python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
-
-# Install Flask
-RUN cd ~ && \
-    pip3 install flask flask-cors
-
-
-# Install Face-Recognition Python Library
-RUN cd ~ && \
-    mkdir -p face_recognition && \
-    git clone https://github.com/ageitgey/face_recognition.git face_recognition/ && \
-    cd face_recognition/ && \
-    pip3 install -r requirements.txt && \
-    python3 setup.py install
-
+WORKDIR /usr/share/app
 
 # Copy web service script
-COPY facerec_service.py /root/facerec_service.py
+ADD . /usr/share/app
 
+RUN pip3 install -r /usr/share/app/face_recognition/requirements.txt && python3 setup.py install
+RUN pip3 install -r /usr/share/app/requirements.txt
 
 # Start the web service
-CMD cd /root/ && \
-    python3 facerec_service.py
+#CMD cd /root/ && \
+#    python3 facerec_service.py
