@@ -25,7 +25,7 @@ for file_name in file_names:
               "\ncapabilities: {capabilities}".format(driver=driver,
                                                       card=card,
                                                       bus_info=bus_info,
-                                                      capabilities=", ".join(capabilities)))
+                                                      capabilities=", ".join([str(i) for i in capabilities])))
         video.close()
-    except IOError, e:
+    except IOError as e:
         print("    " + str(e))

@@ -13,12 +13,14 @@
 # purpose, without any conditions, unless such conditions are
 # required by law.
 
-import Image
+from PIL import Image
 import select
 import v4l2capture
 import time
 
 # Open the video device.
+video = v4l2capture.Video_device("/dev/video0")
+video.close()
 video = v4l2capture.Video_device("/dev/video0")
 
 # Suggest an image size to the device. The device may choose and
@@ -37,15 +39,18 @@ video.queue_all_buffers()
 # Start the device. This lights the LED if it's a camera that has one.
 video.start()
 
-stop_time = time.time() + 10.0
+stop_time = time.time() + 100.0
 with open('video.mjpg', 'wb') as f:
     while stop_time >= time.time():
         # Wait for the device to fill the buffer.
         select.select((video,), (), ())
 
         # The rest is easy :-)
-        image_data = video.read_and_queue()
-        f.write(image_data)
-    
+        try:
+            image_data = video.read_and_queue()
+            f.write(image_data)
+        except:
+            break
+
 video.close()
 print("Saved video.mjpg (Size: " + str(size_x) + " x " + str(size_y) + ")")

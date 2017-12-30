@@ -13,16 +13,21 @@
 # purpose, without any conditions, unless such conditions are
 # required by law.
 
-import Image
+from PIL import Image
+import time
 import select
 import v4l2capture
 
 # Open the video device.
 video = v4l2capture.Video_device("/dev/video0")
+video.close()
+video = v4l2capture.Video_device("/dev/video0")
+
+time.sleep(3)
 
 # Suggest an image size to the device. The device may choose and
 # return another size if it doesn't support the suggested one.
-size_x, size_y = video.set_format(1280, 1024)
+size_x, size_y = video.set_format(640, 480)
 
 # Create a buffer to store image data in. This must be done before
 # calling 'start' if v4l2capture is compiled with libv4l2. Otherwise
@@ -40,8 +45,12 @@ video.start()
 select.select((video,), (), ())
 
 # The rest is easy :-)
-image_data = video.read()
+try:
+    image_data = video.read()
+    image = Image.frombytes("RGB", (size_x, size_y), image_data)
+    image.save("image.jpg")
+    print("Saved image.jpg (Size: " + str(size_x) + " x " + str(size_y) + ")")
+except:
+    pass
 video.close()
-image = Image.fromstring("RGB", (size_x, size_y), image_data)
-image.save("image.jpg")
-print("Saved image.jpg (Size: " + str(size_x) + " x " + str(size_y) + ")")
+

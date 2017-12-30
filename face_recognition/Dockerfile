@@ -1,4 +1,4 @@
-FROM python:3.4-slim
+FROM python:3.6-slim
 
 RUN apt-get -y update && \
     apt-get install -y --fix-missing \
@@ -21,6 +21,7 @@ RUN apt-get -y update && \
     pkg-config \
     python3-dev \
     python3-numpy \
+    opencv-python \
     software-properties-common \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
@@ -40,6 +41,7 @@ ADD . /usr/share/app
 
 RUN pip3 install -r /usr/share/app/face_recognition/requirements.txt && python3 setup.py install
 RUN pip3 install -r /usr/share/app/requirements.txt
+RUN cd python-v4l2capture;python3 setup.py install
 
 # Start the web service
 #CMD cd /root/ && \

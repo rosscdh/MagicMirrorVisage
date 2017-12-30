@@ -34,10 +34,10 @@ services:
     build:
       context: ./face_recognition
       dockerfile: Dockerfile
-    command: /usr/local/bin/python3 /root/picam2facerec.py
+    #command: /usr/local/bin/python3 /root/picam2facerec.py
+    command: /usr/local/bin/python3 /usr/share/app/examples/cam.py
     volumes:
-      - "$PWD/face_recognition/examples/picam2facerec.py:/root/picam2facerec.py"
-      - "$PWD/face_recognition/examples/requirements.txt:/root/requirements.txt"
+      - "$PWD/face_recognition:/usr/share/app"
     environment:
       - VISAGE_URL=http://192.168.0.132:8083
       - FACIAL_URL=http://192.168.0.132:8082
