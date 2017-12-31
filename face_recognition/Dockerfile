@@ -28,13 +28,15 @@ RUN apt-get -y update && \
 
 
 # Install DLIB
-RUN cd ~ && \
-    mkdir -p dlib && \
-    git clone -b 'v19.7' --single-branch https://github.com/davisking/dlib.git dlib/ && \
-    cd  dlib/ && \
-    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
+#RUN cd ~ && \
+#    mkdir -p dlib && \
+#    git clone -b 'v19.7' --single-branch https://github.com/davisking/dlib.git dlib/ && \
+#    cd  dlib/ && \
+#    python3 setup.py install --yes USE_AVX_INSTRUCTIONS
 
 WORKDIR /usr/share/app
+
+RUN pip3 install dlib
 
 # Copy web service script
 ADD . /usr/share/app
