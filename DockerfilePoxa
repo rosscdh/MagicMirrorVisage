@@ -1,7 +1,7 @@
-#FROM elixir
-FROM jonathantron/armv7l-archlinux-elixir:latest
+FROM elixir
+#FROM jonathantron/armv7l-archlinux-elixir:latest
 
-RUN apt-get install -y git
+#RUN pacman -Syy && pacman -Syu --noconfirm --noprogressbar git gcc make
 
 ## Prerequisites ##
 RUN mix do local.rebar, local.hex --force

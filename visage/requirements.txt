@@ -8,3 +8,4 @@ marshmallow==2.15.0
 wtforms==2.1
 marshmallow-mongoengine==0.9.1
 jinja2==2.10
+pusher==1.7.2

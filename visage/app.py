@@ -5,6 +5,7 @@ import falcon
 import qrcode
 import jinja2
 import requests
+from pusher import Pusher
 
 from urllib.parse import urljoin
 
@@ -12,8 +13,19 @@ from falcon_multipart.middleware import MultipartMiddleware
 
 from forms import ProfileForm
 
-VISAGE_URL = os.getenv('VISAGE_URL', 'http://192.168.0.132:8083')
-FACIAL_URL = os.getenv('FACIAL_URL', 'http://192.168.0.132:8082')
+VISAGE_URL = os.getenv('VISAGE_URL', 'http://192.168.0.117:8083')
+FACIAL_URL = os.getenv('FACIAL_URL', 'http://192.168.0.117:8082')
+
+
+pusher = Pusher(
+    app_id=os.getenv('PUSHER_APP_ID', 'app_id'),
+    key=os.getenv('PUSHER_KEY', 'app_key'),
+    secret=os.getenv('PUSHER_SECRET', 'secret'),
+    cluster=os.getenv('PUSHER_CLUSTER', 'APP_CLUSTER'),
+    host=os.getenv('PUSHER_HOST', '192.168.0.117'),
+    port=os.getenv('PUSHER_PORT', 8081),
+    ssl=False
+)
 
 
 def load_template(name):
@@ -31,6 +43,13 @@ def _base64_image(img):
 
     base64_encoded_result_bytes = base64.b64encode(img_bytes)
     return 'data:image/png;base64,%s' % base64_encoded_result_bytes.decode('ascii')
+
+
+def publish(channel, event_name, **kwargs):
+    print('publishing to {channel} for event {event_name} {data}'.format(channel=channel, event_name=event_name, data=kwargs))
+    pusher.trigger(channels=channel,
+                   event_name=event_name,
+                   data=kwargs)
 
 
 class FaceResource:
@@ -56,7 +75,7 @@ class FaceResource:
                                  files=files)
         if response.ok is False:
             resp.media = {"message": "Could not test image: %s" % response.content}
-
+            publish(channel='home', event_name='new-compliment', **resp.media)
         else:
             data = response.json()
 
@@ -80,6 +99,7 @@ class FaceResource:
                     'qr': _base64_image(img=qr.make_image()),
                     'faces': data.get('faces', [])[0]
                 }
+
             else:
                 url = urljoin(VISAGE_URL, 'profile')
                 qr.add_data(url)
@@ -89,6 +109,8 @@ class FaceResource:
                     'message': 'I dont seem to know you, please tell me who you are',
                     'qr': _base64_image(img=qr.make_image()),
                 }
+
+            publish(channel='home', event_name='new-compliment', **{'message': resp.media.get('message')})
 
 
 class ProfileResource:

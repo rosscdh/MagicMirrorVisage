@@ -21,7 +21,7 @@ RUN apt-get -y update && \
     pkg-config \
     python3-dev \
     python3-numpy \
-    opencv-python \
+    libopencv-dev python-opencv \
     software-properties-common \
     zip \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
@@ -39,9 +39,11 @@ WORKDIR /usr/share/app
 # Copy web service script
 ADD . /usr/share/app
 
-RUN pip3 install -r /usr/share/app/face_recognition/requirements.txt && python3 setup.py install
+WORKDIR /usr/share/app/face_recognition
+RUN pip3 install -r requirements.txt && python3 setup.py install
+
+WORKDIR /usr/share/app
 RUN pip3 install -r /usr/share/app/requirements.txt
-RUN cd python-v4l2capture;python3 setup.py install
 
 # Start the web service
 #CMD cd /root/ && \

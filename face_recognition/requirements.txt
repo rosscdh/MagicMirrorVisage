@@ -1,5 +1,5 @@
 Pillow==4.3.0
 requests==2.18.4
-picamera
+#picamera
 flask
 flask-cors

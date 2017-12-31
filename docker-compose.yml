@@ -9,9 +9,10 @@ services:
       - "8083:8080"
     volumes:
       - "$PWD/visage:/usr/local/app"
+      - "$HOME/.virtualenvs/mmirror/lib/python3.6/site-packages/pusher/client.py:/usr/local/lib/python3.6/site-packages/pusher/client.py"
     environment:
-      - VISAGE_URL=http://192.168.0.132:8083
-      - FACIAL_URL=http://192.168.0.132:8082
+      - VISAGE_URL=http://192.168.0.117:8083
+      - FACIAL_URL=http://192.168.0.117:8082
     stdin_open: true
     tty: true
 
@@ -22,11 +23,10 @@ services:
     ports:
       - "8082:8080"
     volumes:
-      - "$PWD/face_recognition/faces:/root/faces"
-      - "$PWD/face_recognition/facerec_service.py:/root/facerec_service.py"
+      - "$PWD/face_recognition:/root"
     environment:
-      - VISAGE_URL=http://192.168.0.132:8083
-      - FACIAL_URL=http://192.168.0.132:8082
+      - VISAGE_URL=http://192.168.0.117:8083
+      - FACIAL_URL=http://192.168.0.117:8082
     stdin_open: true
     tty: true
 
@@ -39,8 +39,8 @@ services:
     volumes:
       - "$PWD/face_recognition:/usr/share/app"
     environment:
-      - VISAGE_URL=http://192.168.0.132:8083
-      - FACIAL_URL=http://192.168.0.132:8082
+      - VISAGE_URL=http://192.168.0.117:8083
+      - FACIAL_URL=http://192.168.0.117:8082
     stdin_open: true
     tty: true
 
