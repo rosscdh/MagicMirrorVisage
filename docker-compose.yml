@@ -24,6 +24,8 @@ services:
       - "8082:8080"
     volumes:
       - "$PWD/face_recognition:/root"
+    devices:
+      - "/dev/video0:/dev/video0"
     environment:
       - VISAGE_URL=http://192.168.0.117:8083
       - FACIAL_URL=http://192.168.0.117:8082
