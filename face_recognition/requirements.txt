@@ -1,5 +1,4 @@
 Pillow==4.3.0
 requests==2.18.4
-opencv-python==3.4.0.12
 flask
 flask-cors

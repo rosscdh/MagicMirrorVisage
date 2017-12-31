@@ -24,22 +24,21 @@ services:
       - "8082:8080"
     volumes:
       - "$PWD/face_recognition:/root"
-    devices:
-      - "/dev/video0:/dev/video0"
     environment:
       - VISAGE_URL=http://192.168.0.117:8083
       - FACIAL_URL=http://192.168.0.117:8082
     stdin_open: true
     tty: true
 
-  camcaptcha:
+  camcapture:
     build:
-      context: ./face_recognition
-      dockerfile: DockerfileCamCapture
-    #command: /usr/local/bin/python3 /root/picam2facerec.py
-    command: /usr/local/bin/python3 /usr/share/app/examples/cam.py
+      context: ./camcapture
+      dockerfile: Dockerfile
+    command: /usr/local/bin/python3 /usr/share/app/cam.py
     volumes:
-      - "$PWD/face_recognition:/usr/share/app"
+      - "$PWD/camcapture:/usr/share/app"
+    # devices:
+    #   - "/dev/video0:/dev/video0"
     environment:
       - VISAGE_URL=http://192.168.0.117:8083
       - FACIAL_URL=http://192.168.0.117:8082

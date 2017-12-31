@@ -31,9 +31,6 @@ WORKDIR /usr/share/app
 # Copy web service script
 ADD . /usr/share/app
 
-WORKDIR /usr/share/app/face_recognition
-RUN pip3 install -r requirements.txt && python3 setup.py install
-
 WORKDIR /usr/share/app
 RUN pip3 install -r /usr/share/app/requirements.txt
 
