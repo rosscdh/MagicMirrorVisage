@@ -32,10 +32,10 @@ services:
     stdin_open: true
     tty: true
 
-  gotyou:
+  camcaptcha:
     build:
       context: ./face_recognition
-      dockerfile: Dockerfile
+      dockerfile: DockerfileCamCapture
     #command: /usr/local/bin/python3 /root/picam2facerec.py
     command: /usr/local/bin/python3 /usr/share/app/examples/cam.py
     volumes:
